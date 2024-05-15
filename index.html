@@ -34,6 +34,7 @@
 
 <body>
 <button id="tesssssssssst0123" data-ga >測試</button>
+    <button id="noclick" data-ga >測試click</button>
     <div class="wrap">
         <div class="box"></div>
         <div class="options">
@@ -72,7 +73,7 @@
     <script src="./assets/js/index.min.js"></script>
 <script>
     $('[data-ga]').on('click.ga', function () {
-        gtag('event', 'click', {
+        gtag('event', {
             event_category: '2024WelcomenQ2',
             event_label: $(this).attr('id')
         })
