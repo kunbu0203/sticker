@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="share-buttons" id="shareButtons">
+        <!-- 分享按鈕將在這裡動態生成 -->
+    </div>
+    <script>
+        function isMobileDevice() {
+          return /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+        }
+    
+        function createButton(text, onClick) {
+          const button = document.createElement('button');
+          button.textContent = text;
+          button.addEventListener('click', onClick);
+          return button;
+        }
+    
+        async function nativeShare() {
+          const imgUrl = 'https://kunbu0203.github.io/sticker/assets/images/share.jpg'; // 指定圖片的 URL
+    
+          try {
+            const response = await fetch(imgUrl);
+            const blob = await response.blob();
+            const file = new File([blob], 'image.jpg', { type: blob.type });
+    
+            if (navigator.share) {
+              navigator.share({
+                title: '分享的標題',
+                text: '分享的描述，分享的描述，分享的描述，分享的描述，分享的描述。',
+                url: window.location.href,
+                files: [file]
+              }).then(() => {
+                console.log('Thanks for sharing!');
+              }).catch(console.error);
+            } else {
+              alert('您的設備不支援原生分享功能');
+            }
+          } catch (error) {
+            console.error('Error fetching the image:', error);
+          }
+        }
+    
+        function copyToClipboard() {
+          const url = window.location.href;
+          navigator.clipboard.writeText(url).then(() => {
+            alert('鏈接已複製到剪貼簿！');
+          }, (err) => {
+            console.error('複製失敗: ', err);
+          });
+        }
+    
+        document.addEventListener('DOMContentLoaded', () => {
+          const shareButtons = document.getElementById('shareButtons');
+    
+          if (isMobileDevice() && navigator.share) {
+            shareButtons.appendChild(createButton('分享這個網站', nativeShare));
+          } else {
+            shareButtons.appendChild(createButton('複製鏈接', copyToClipboard));
+          }
+        });
+      </script>
+</body>
+</html>
